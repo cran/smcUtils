@@ -1,8 +1,8 @@
-resample <-
-function(weights, num.samples=length(weights), 
-                    method = c("multinomial","residual","stratified","systematic","branching"),
+
+resample = function(weights, num.samples=length(weights), 
+                    method = c("stratified","residual","multinomial","systematic","branching"),
                     nonuniformity = c("none","ess","cov","entropy"), threshold=NULL,
-                    resample.function = multinomial.resample)
+                    rrf = "stratified", engine="R")
 {
   method        <- match.arg(method)
   nonuniformity <- match.arg(nonuniformity)
@@ -20,11 +20,11 @@ function(weights, num.samples=length(weights),
 
   if (do.resample) {
     switch(method,
-      "multinomial" = { ids = multinomial.resample(weights, num.samples) },
-      "residual"    = { ids = residual.resample(   weights, num.samples, resample.function) },
-      "stratified"  = { ids = stratified.resample( weights, num.samples) },
-      "systematic"  = { ids = systematic.resample( weights, num.samples) },
-      "branching"   = { ids = branching.resample(  weights, num.samples) }
+      "multinomial" = { ids = multinomial.resample(weights, num.samples, engine) },
+      "residual"    = { ids = residual.resample(   weights, num.samples, engine, rrf) },
+      "stratified"  = { ids = stratified.resample( weights, num.samples, engine) },
+      "systematic"  = { ids = systematic.resample( weights, num.samples, engine) },
+      "branching"   = { ids = branching.resample(  weights, num.samples, engine) }
     )
     weights = rep(1/num.samples,num.samples)
   } else { 

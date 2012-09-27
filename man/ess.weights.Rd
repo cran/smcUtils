@@ -9,14 +9,15 @@
 number of samples given a set of weights (probabilities).}
 
 \usage{
-ess.weights(weights)
-cov.weights(weights)
-ent.weights(weights)
+ess.weights(weights, engine="R")
+cov.weights(weights, engine="R")
+ent.weights(weights, engine="R")
 }
 %- maybe also 'usage' for other objects documented here.
 
 \arguments{
   \item{weights}{a vector of weights (probabilities)}
+  \item{engine}{run using "R" or "C" code}
 }
 
 \details{
@@ -43,16 +44,13 @@ a scalar indicating how uniform the weights are
 Liu, J. (2004) _Monte Carlo Strategies in Scientific Computing_
 
 Doucet, A., dr Freitas, N., and Gordon, N. (2001) _Sequential Monte Carlo 
-Methods in Practice
+Methods in Practice_
 }
 
 \author{
 Jarad Niemi
 }
 
-\note{
-%%  ~~further notes~~
-}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
