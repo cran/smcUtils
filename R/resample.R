@@ -1,21 +1,20 @@
 
 resample = function(weights, num.samples=length(weights), 
                     method = c("stratified","residual","multinomial","systematic","branching"),
-                    nonuniformity = c("none","ess","cov","entropy"), threshold=NULL,
-                    rrf = "stratified", engine="R")
+                    nonuniformity = c("none","ess","cov","entropy"), threshold=0.5,
+                    rrf = "stratified", engine="R", log=TRUE, normalized=FALSE)
 {
   method        <- match.arg(method)
   nonuniformity <- match.arg(nonuniformity)
 
+  if (!normalized) weights = check.weights(weights, log=log, normalized=normalized)
+
   do.resample = FALSE
   switch(nonuniformity,
     "none"     = { do.resample = TRUE; },
-    "ess"      = { if (is.null(threshold)) threshold=0.5*num.samples; 
-                   if (ess.weights(weights)<threshold) do.resample = TRUE; },
-    "cov"      = { if (is.null(threshold)) threshold=0.5*num.samples;
-                   if (cov.weights(weights)>threshold) do.resample = TRUE },
-    "entropy"  = { if (is.null(threshold)) threshold=0.5*log2(num.samples);
-                   if (ent.weights(weights)<threshold) do.resample = TRUE }
+    "ess"      = { if (ess.weights(weights)/num.samples      < threshold) do.resample = TRUE },
+    "cov"      = { if (cov.weights(weights)/num.samples      > threshold) do.resample = TRUE },
+    "entropy"  = { if (ent.weights(weights)/log2(num.samples)< threshold) do.resample = TRUE }
   )
 
   if (do.resample) {
